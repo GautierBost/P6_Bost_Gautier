@@ -71,6 +71,13 @@ exports.modifySauce = (req, res, next) => {
         error: new Error("Requête non authorisée !"),
       });
     }
+    //si nouvelle image suppression de l'ancienne
+    if (req.file) {
+      const filename = sauce.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, (err) => {
+        if (err) throw err;
+      });
+    }
     const sauceObject = req.file
       ? {
           ...JSON.parse(req.body.sauce),
