@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const helmet = require("helmet");
+const dotenv = require("dotenv");
+dotenv.config();
 
 //importation des routes
 const sauceRoutes = require("./routes/sauces");
@@ -10,10 +13,15 @@ const app = express();
 
 app.use(express.json());
 
+//protection contre plusieurs vunérabilité connue
+app.use(helmet());
+
 //connexion base de données
+const id = process.env.MONGODB_ID;
+const pswd = process.env.MONGODB_PSWD;
 mongoose
   .connect(
-    "mongodb+srv://piiquante:Piiquante.2022@cluster0.x0h2y.mongodb.net/?retryWrites=true&w=majority",
+    `mongodb+srv://${id}:${pswd}@cluster0.x0h2y.mongodb.net/?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
@@ -30,6 +38,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+  res.setHeader("cross-origin-resource-policy", "cross-origin");
   next();
 });
 

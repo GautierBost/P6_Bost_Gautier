@@ -111,7 +111,7 @@ exports.deleteSauce = (req, res, next) => {
           error: new Error("Requête non authorisée !"),
         });
       }
-      const filename = thing.imageUrl.split("/images/")[1];
+      const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
           .then(() => {
@@ -150,7 +150,7 @@ exports.likeSauce = (req, res, next) => {
       }
       //anuler un like
       if (
-        sauce.usersLiked.indexOf(req.body.userId) != -1 &&
+        sauce.usersLiked.indexOf(req.body.userId) !== -1 &&
         req.body.like === 0
       ) {
         const userIndex = sauce.usersLiked.indexOf(req.body.userId);
@@ -159,7 +159,7 @@ exports.likeSauce = (req, res, next) => {
       }
       //annuler un dislike
       if (
-        sauce.usersDisliked.indexOf(req.body.userId) != -1 &&
+        sauce.usersDisliked.indexOf(req.body.userId) !== -1 &&
         req.body.like === 0
       ) {
         const userIndex = sauce.usersDisliked.indexOf(req.body.userId);
